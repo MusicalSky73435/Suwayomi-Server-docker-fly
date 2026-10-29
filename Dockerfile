@@ -18,7 +18,7 @@ RUN if [ -n "$TACHIDESK_ABORT_HANDLER_DOWNLOAD_URL" ]; then \
 FROM eclipse-temurin:25.0.4_7-jre-noble
 
 ARG TARGETPLATFORM
-ARG TACHIDESK_KCEF=y # y or n, leave empty for auto-detection
+ARG TACHIDESK_KCEF=y
 ARG TACHIDESK_KCEF_RELEASE_URL
 
 # Install envsubst from GNU's gettext project
@@ -63,12 +63,14 @@ RUN userdel -r ubuntu && \
 COPY scripts/create_server_conf.sh /home/suwayomi/create_server_conf.sh
 COPY scripts/startup_script.sh /home/suwayomi/startup_script.sh
 
+# Déclaration anticipée de l'ARG pour qu'il soit disponible dans le RUN juste en dessous
 ARG TACHIDESK_RELEASE_DOWNLOAD_URL
+
 # Copy the app into the container
 # then update permissions of files.
 # we grant o+rwx because we need to allow non default UIDs (eg via docker run ... --user)
 # to write to the directory to generate the server.conf
-RUN curl -s --create-dirs -L $TACHIDESK_RELEASE_DOWNLOAD_URL -o /home/suwayomi/startup/tachidesk_latest.jar && \
+RUN curl -s --create-dirs -L "$TACHIDESK_RELEASE_DOWNLOAD_URL" -o /home/suwayomi/startup/tachidesk_latest.jar && \
     chmod 777 -R /home/suwayomi && \
     chown -R suwayomi:suwayomi /home/suwayomi
 
