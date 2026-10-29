@@ -63,8 +63,8 @@ RUN userdel -r ubuntu && \
 COPY scripts/create_server_conf.sh /home/suwayomi/create_server_conf.sh
 COPY scripts/startup_script.sh /home/suwayomi/startup_script.sh
 
-# Déclaration anticipée de l'ARG pour qu'il soit disponible dans le RUN juste en dessous
-ARG TACHIDESK_RELEASE_DOWNLOAD_URL
+# Déclaration de l'ARG avec une valeur par défaut pour éviter qu'il soit vide si non transmis par Fly.io
+ARG TACHIDESK_RELEASE_DOWNLOAD_URL="https://github.com/Suwayomi/Suwayomi-Server/releases/latest/download/tachidesk-server.jar"
 
 # Copy the app into the container
 # then update permissions of files.
